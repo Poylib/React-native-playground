@@ -1,116 +1,90 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
-import React from 'react';
+import React, {useState} from 'react';
 import type {Node} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-/* $FlowFixMe[missing-local-annot] The type annotation(s) required by Flow's
- * LTI update could not be added via codemod */
-const Section = ({children, title}): Node => {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-};
+import {SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, useColorScheme, View} from 'react-native';
 
 const App: () => Node = () => {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+  const [flexDirection, setFlexDirection] = useState('column');
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        {/* <Header /> */}
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.js</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <PreviewLayout //
+      label="flexDirection"
+      values={['column', 'row', 'row-reverse', 'column-reverse']}
+      selectedValue={flexDirection}
+      setSelectedValue={setFlexDirection}>
+      <View style={[styles.box, {backgroundColor: 'powderblue'}]} />
+      <View style={[styles.box, {backgroundColor: 'skyblue'}]} />
+      <View style={[styles.box, {backgroundColor: 'steelblue'}]} />
+    </PreviewLayout>
   );
 };
 
+const PreviewLayout = ({
+  //
+  label,
+  children,
+  values,
+  selectedValue,
+  setSelectedValue,
+}) => (
+  <View style={{padding: 10, flex: 1}}>
+    <Text style={styles.label}>{label}</Text>
+    <View style={styles.row}>
+      {values.map(value => (
+        <TouchableOpacity //
+          key={value}
+          onPress={() => setSelectedValue(value)}
+          style={[styles.button, selectedValue === value && styles.selected]}>
+          <Text style={(styles.buttonLabel, selectedValue === value && styles.selectedLabel)}>{value}</Text>
+        </TouchableOpacity>
+      ))}
+    </View>
+    <View style={[styles.container, {[label]: selectedValue}]}>{children}</View>
+  </View>
+);
+
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
+  container: {
+    flex: 1,
     marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
+    padding: 20,
+    firstbox: {
+      flex: 1,
+      backgroundColor: 'aliceblue',
+    },
   },
-  highlight: {
-    fontWeight: '700',
+  box: {
+    width: 50,
+    height: 50,
+  },
+  row: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  button: {
+    paddingHorizontal: 8,
+    paddingVertical: 6,
+    backgroundColor: 'oldlace',
+    alignSelf: 'flex-start',
+    marginHorizontal: '1%',
+    marginBottm: '48%',
+    textAlign: 'center',
+  },
+  selected: {
+    backgroundColor: 'coral',
+    borderWidth: 0,
+  },
+  buttonLabel: {
+    fontSize: 12,
+    fontWeight: '500',
+    color: 'coral',
+  },
+  selectedLabel: {
+    color: 'white',
+  },
+  label: {
+    textAlign: 'center',
+    marginBottom: 10,
+    fontSize: 24,
   },
 });
 
