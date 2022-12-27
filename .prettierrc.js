@@ -5,5 +5,4 @@ module.exports = {
   singleQuote: true,
   trailingComma: 'all',
   printWidth: 250,
-  singleQyote: true,
 };
